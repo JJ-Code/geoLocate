@@ -1,0 +1,22 @@
+{
+  "name": "geolocate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon --ignore client/ server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.3.1",
+    "dotenv": "^8.2.0",
+    "google-auth-library": "^6.0.0",
+    "graphql": "^15.0.0",
+    "mongoose": "^5.9.9",
+    "nodemon": "^2.0.3"
+  },
+  "devDependencies": {}
+}
