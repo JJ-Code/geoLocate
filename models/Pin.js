@@ -1,14 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const PinSchema = new mongoose.Schema({
-  createdAt: String,
   title: String,
   content: String,
   image: String,
   latitude: Number,
-  longitutde: Number,
+  longitude: Number,
   author: {
-    type: mongoose.Schema.Objectd,
+    type: mongoose.Schema.ObjectId,
     ref: "User"
   },
   comments: [{
@@ -18,15 +17,12 @@ const PinSchema = new mongoose.Schema({
       default: Date.now
     },
     author: {
-      type: mongoose.Schema.Objectd,
+      type: mongoose.Schema.ObjectId,
       ref: "User"
     }
-
   }]
-
-
 }, {
   timestamps: true
-})
+});
 
-module.exports = mongoose.model("Pin", PinSchema)
+module.exports = mongoose.model("Pin", PinSchema);
