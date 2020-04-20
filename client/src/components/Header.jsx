@@ -4,11 +4,14 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import MapIcon from "@material-ui/icons/Map";
 import Typography from "@material-ui/core/Typography";
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import AppContext from "../context/appContext";
 import Signout from "./Auth/Signout";
-//import { Typography } from "@material-ui/core";
 
 const Header = ({ classes }) => {
+  // useMediaQuery for responsive
+  const mobileSize = useMediaQuery('(max-width: 600px)');
+
   const appContext = useContext(AppContext);
   const { currentUser } = appContext;
 
@@ -19,13 +22,14 @@ const Header = ({ classes }) => {
           {/* {Tile logo} */}
           <div className={classes.grow}>
             <MapIcon className={classes.icon} />
-            <Typography component="h1"
+            <Typography
+              className={mobileSize ? classes.rootMobile : ''}
+              component="h1"
               variant="h6"
               color="inherit"
               noWrap>
               GeoPins
-
-          </Typography>
+            </Typography>
           </div>
 
           {/* {current user info} */}
@@ -37,6 +41,7 @@ const Header = ({ classes }) => {
                 alt={currentUser.name}
               />
               <Typography
+                className={mobileSize ? classes.rootMobile : ''}
                 variant="h5"
                 color="inherit"
                 noWrap>
@@ -68,7 +73,7 @@ const styles = theme => ({
     color: "green",
     fontSize: 45
   },
-  mobile: {
+  rootMobile: {
     display: "none"
   },
   picture: {

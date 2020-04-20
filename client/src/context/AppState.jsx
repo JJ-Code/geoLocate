@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
 import AppContext from "./appContext";
 import AppReducer from "./appReducer";
-import { LOGIN_USER, IS_LOGGED_IN, SIGNOUT_USER, CREATE_DRAFT, UPDATE_DRAFT_LOCATION, DELETE_DRAFT } from "./types";
+import { LOGIN_USER, IS_LOGGED_IN, SIGNOUT_USER, CREATE_DRAFT, UPDATE_DRAFT_LOCATION, DELETE_DRAFT, GET_PINS, CREATE_PIN, SET_PIN, DELETE_PIN, CREATE_COMMENT } from "./types";
 
 
 //const initialState = useContext(AppContext)
@@ -10,7 +10,9 @@ const AppState = props => {
   const initialState = {
     currentUser: null, //is null until the user logs in and a user object is created 
     isAuth: false, //users will not be authenticated unless logged in  
-    draft: null
+    draft: null,
+    pins: [],
+    currentPin: null
   }
   const [state, dispatch] = useReducer(AppReducer, initialState)
 
@@ -65,10 +67,47 @@ const AppState = props => {
     })
   }
 
+  // retrive pins array from backend and set it to curr state
+  const setPinsArray = (getPins) => {
+    dispatch({
+      type: GET_PINS,
+      payload: getPins
+    })
+  }
   
 
-  
+  //set new pin in arrary
+  const createNewPin = (createPin) => {
+    dispatch({
+      type: CREATE_PIN,
+      payload: createPin
+    })
+  }
 
+  
+  const setPin = (pin) => {
+    dispatch({
+      type: SET_PIN,
+      payload: pin
+    })
+  }
+
+  const pinToBeDeleted = (deletePin) => {
+    dispatch({
+      type: DELETE_PIN,
+      payload: deletePin
+    })
+  }
+
+  const creatNewComment = (createComment) => {
+    dispatch({
+      type: CREATE_COMMENT,
+      payload: createComment
+    })
+  } 
+
+
+  
 
   console.log(state);
   return <AppContext.Provider
@@ -76,12 +115,19 @@ const AppState = props => {
       currentUser: state.currentUser,
       isAuth: state.isAuth,
       draft: state.draft,
+      pins: state.pins,
+      currentPin: state.currentPin,
       setCurrentUser,
       setAuth,
       signoutUser,
       setDraft,
       updateDraft,
-      deleteDraftPin
+      deleteDraftPin,
+      setPinsArray,
+      createNewPin,
+      setPin,
+      pinToBeDeleted,
+      creatNewComment
     }
     }>
 

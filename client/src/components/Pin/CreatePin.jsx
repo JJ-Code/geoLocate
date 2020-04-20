@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { GraphQLClient } from "graphql-request";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -11,8 +10,17 @@ import SaveIcon from "@material-ui/icons/SaveTwoTone";
 import AppContext from "../../context/appContext"
 import axios from "axios";
 import { CREATE_PIN_MUTATION } from "../../graphql/mutations";
+import { useClient } from "../../client";
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+
 
 const CreatePin = ({ classes }) => {
+  // useMediaQuery for responsive
+  const mobileSize = useMediaQuery('(max-width:600px)');
+
+  //importing graphgl client from client.jsx
+  const client = useClient();
+
   //getting current state 
   const appContext = useContext(AppContext);
   const { draft, deleteDraftPin } = appContext;
@@ -50,21 +58,17 @@ const CreatePin = ({ classes }) => {
     try {
       event.preventDefault();
       setSubmitting(true);
-      //grabing auth from backend to use
-      const idToken = window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
-
-      const client = new GraphQLClient("http://localhost:4000/graphql", {
-        headers: { authorization: idToken }
-      });
       const url = await handleImageUpload();
       const { latitude, longitude } = draft;
       const variables = { title, image: url, content, latitude, longitude }
       const { createPin } = await client.request(CREATE_PIN_MUTATION, variables);
-      
       console.log("Pin created", { createPin });
+      //Moved to map.js as a result of subscbitions 
+      //createNewPin(createPin);
       handleDeleteDraft();
+      
 
-      // console.log({ title, image, url, content });
+      //console.log({ title, image, url, content });
 
     } catch (error) {
       setSubmitting(false)
@@ -119,7 +123,7 @@ const CreatePin = ({ classes }) => {
           name={'content'}
           label={'Content'}
           multiline
-          //rows={mobileSize ? 3 : 6}
+          rows={mobileSize ? 3 : 6}
           margin={'normal'}
           fullWidth
           variant={'outlined'}

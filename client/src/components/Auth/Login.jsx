@@ -5,8 +5,7 @@ import { GraphQLClient } from "graphql-request";
 import Typography from "@material-ui/core/Typography";
 import AppContext from "../../context/appContext";
 import { ME_QUERY } from "../../graphql/queries";
-
-
+import { BASE_URL } from "../../client";
 
 
 const Login = ({ classes }) => {
@@ -21,7 +20,7 @@ const Login = ({ classes }) => {
       //console.log({googleUser})
 
       //sends token to graphql
-      const client = new GraphQLClient("http://localhost:4000/graphql", {
+      const client = new GraphQLClient(BASE_URL, {
         headers: { authorization: idToken }
       })
 
@@ -49,7 +48,8 @@ const Login = ({ classes }) => {
 
   const onFailure = error => {
     console.error("Error Logging in", error);
-
+    //this will redirect if token expires or fails if user is logged in for too long
+    setAuth(false);
   }
 
 

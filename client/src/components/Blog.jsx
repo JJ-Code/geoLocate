@@ -4,25 +4,36 @@ import { Paper } from "@material-ui/core";
 import AppContext from "../context/appContext";
 import NoContent from "./Pin/NoContent";
 import CreatePin from "./Pin/CreatePin";
+import PinContent from "./Pin/PinContent";
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+
 
 const Blog = ({ classes }) => {
+  // useMediaQuery for responsive
+  const mobileSize = useMediaQuery('(max-width:600px)');
+
   //getting current state 
   const appContext = useContext(AppContext);
-  const { draft, currentUser } = appContext;
+  const { draft, currentPin } = appContext;
 
   let BlogContent;
-
+  
   //if user has not draft show nocontent 
-  if (!draft) {
+  if (!draft && !currentPin) {
     BlogContent = NoContent;
   }
-  else if (draft) {
-    //creat pin
+  else if (draft && !currentPin) {
+    //show create draft content when left mouse pointer was clicked
     BlogContent = CreatePin;
   }
 
+  else if (!draft && currentPin) {
+    //show pin content if currentPin is clicked 
+    BlogContent = PinContent;
+  }
+
   return (
-    <Paper className={classes.root}>
+    <Paper className={mobileSize ? classes.rootMobile : classes.root}>
       <BlogContent />
     </Paper>
   );

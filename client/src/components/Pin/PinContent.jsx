@@ -1,11 +1,68 @@
-import React from "react";
+import React, {useContext} from "react";
 import { withStyles } from "@material-ui/core/styles";
-// import Typography from "@material-ui/core/Typography";
-// import AccessTime from "@material-ui/icons/AccessTime";
-// import Face from "@material-ui/icons/Face";
+import Typography from "@material-ui/core/Typography";
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import FaceIcon from "@material-ui/icons/Face";
+import format from "date-fns/format";
+import AppContext from "../../context/appContext"
+import CreateComment from "../Comment/CreateComment";
+import Comments from "../Comment/Comments";
+
 
 const PinContent = ({ classes }) => {
-  return <div>PinContent</div>;
+  //getting current state 
+  const appContext = useContext(AppContext);
+  const { currentPin: { title, content, author, createdAt, comments} } = appContext;
+
+  return (
+    <div className={classes.root}>
+
+      <Typography
+        component={'h2'}
+        variant={'h4'}
+        color={'primary'}
+        gutterBottom
+      >
+        {title}
+      </Typography>
+
+      <Typography
+        className={classes.text}
+        component={'h3'}
+        variant={'h6'}
+        color={'inherit'}
+        gutterBottom
+      >
+        <FaceIcon className={classes.text} /> {author.name}
+      </Typography>
+
+      <Typography
+        className={classes.text}
+        variant={'subtitle2'}
+        color={'inherit'}
+        gutterBottom
+      >
+        <AccessTimeIcon className={classes.icon} />
+        {format(Number(createdAt), "MMM do, yyyy")}
+
+      </Typography>
+
+      <Typography
+        variant={'subtitle1'}
+        gutterBottom
+      >
+        {content}
+      </Typography>
+
+
+      {/*Comments*/}
+      <CreateComment />
+      <Comments
+        comments={comments}
+      />
+
+    </div>
+  );
 };
 
 const styles = theme => ({
